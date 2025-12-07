@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Poker Game Tracker</title>
-    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Use Inter font -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body {
@@ -40,17 +38,13 @@
         <header class="text-center mb-8">
             <h1 class="text-4xl font-bold text-gray-800 mb-2">Home Poker Scorecard 💰</h1>
             <p class="text-lg text-gray-600">Buy-in & Reloads are set to <span class="font-bold text-green-600">$10</span>.</p>
-            <!-- Updated Status to reflect Session Storage -->
-            <p id="user-id-display" class="text-sm text-gray-500 mt-2">Status: Data persists across refresh (Session Storage). Closing tab clears data.</p>
+            <p id="user-id-display" class="text-sm text-gray-500 mt-2">Status: Data persists **PERMANENTLY** (Local Storage). Cleared only by hard reset or browser cache clear.</p>
         </header>
 
-        <!-- Loading & Error Indicator -->
         <div id="status-message" class="mb-4 p-3 bg-blue-100 text-blue-700 rounded-lg hidden"></div>
 
-        <!-- GAME CONTENT CONTAINER (Everything visible during tracking, hidden during photo share) -->
         <div id="game-content-container">
         
-            <!-- Add New Player Form -->
             <div class="bg-white p-4 rounded-xl shadow-lg mb-8">
                 <h2 class="text-xl font-semibold mb-3 text-gray-700">Add New Player</h2>
                 <div class="flex flex-col sm:flex-row gap-3">
@@ -61,53 +55,35 @@
                 </div>
             </div>
 
-            <!-- ACTIVE GAME STATUS (TOP SECTION) -->
             <h2 class="text-2xl font-semibold mb-4 text-gray-700">Active Game Status (Buy-ins & Reloads)</h2>
             <div class="player-list overflow-x-auto mb-8">
-                <!-- Header for Active Status - Tighter grid for Name and Buy-in columns -->
                 <div id="in-game-header" class="sticky-header grid grid-cols-[0.8fr_0.3fr_1.4fr_0.3fr] gap-1 font-bold text-sm text-white border-b-2 pb-2 mb-3 px-2 min-w-[400px]">
-                    <!-- NAME - Standard white on black -->
                     <div class="text-white">NAME</div> 
-                    <!-- BUY-IN ($) - Gold -->
                     <div class="text-center text-yellow-400">BUY-IN ($)</div>
-                    <!-- RELOADS / ADD - Blue -->
                     <div class="text-center text-blue-400">RELOADS / ADD</div>
-                    <!-- DEL - Red -->
                     <div class="text-center text-red-400">DEL</div>
                 </div>
                 
-                <!-- In-Game Player List - Buy-in, Reloads (+/-), Delete -->
                 <div id="in-game-list" class="space-y-3 pb-2">
-                    <!-- Player rows and IN-GAME TOTALS row will be injected here -->
                     <div class="text-center py-10 text-gray-500 bg-white rounded-xl shadow-md">No players added yet.</div>
                 </div>
             </div>
 
-            <!-- PAYOUT & RESULTS (BOTTOM SECTION) -->
             <h2 class="text-2xl font-semibold mb-4 text-gray-700 border-t pt-4 border-gray-300">Payout & Final Results</h2>
             <div class="player-list overflow-x-auto">
-                <!-- NEW 5-COLUMN GRID -->
                 <div id="payout-header" class="sticky-header grid grid-cols-[0.8fr_0.9fr_0.9fr_1fr_1fr] gap-1 font-bold text-xs md:text-sm text-white border-b-2 pb-2 mb-3 px-2 min-w-[550px]">
-                    <!-- NAME - Standard white on black -->
                     <div class="text-white">NAME</div>
-                    <!-- TOTAL BUY-IN ($) - Gray -->
                     <div class="text-center text-gray-400">TOTAL IN ($)</div>
-                    <!-- CLOSING BALANCE ($) - Yellow -->
                     <div class="text-right text-yellow-300">BALANCE ($)</div>
-                    <!-- P/L ($) - RENAMED TO P/L -->
                     <div class="text-right text-purple-300">P/L ($)</div>
-                    <!-- P/L ($) - FINAL ADJ -->
                     <div class="text-right text-green-400">P/L ADJ (FINAL) ($)</div>
                 </div>
 
-                <!-- Payout Player List - Total Money In, Closing Balance (Input), P/L Pre, P/L Adj -->
                 <div id="payout-list" class="space-y-3 pb-2">
-                    <!-- Payout player rows and PAYOUT TOTALS row will be injected here -->
                     <div class="text-center py-10 text-gray-500 bg-white rounded-xl shadow-md">No players added yet.</div>
                 </div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="mt-8 pt-4 border-t border-gray-200 flex flex-col md:flex-row justify-end space-y-3 md:space-y-0 md:space-x-4">
                  <button onclick="showAdjustmentConfirmation()" id="adjust-shortfall-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-200 active:scale-95 disabled:opacity-50" disabled>
                     Adjust Shortfall/Surplus
@@ -124,15 +100,13 @@
             </div>
         </div>
         
-        <!-- PHOTO SHARE VIEW (Hidden by default, optimized for screenshot) -->
         <div id="photo-share-view" class="hidden bg-white p-6 rounded-xl shadow-2xl mx-auto w-full">
             <div class="text-center mb-6 pt-4">
                 <h3 class="text-3xl font-extrabold text-gray-800">Final Poker Results</h3>
                 <p id="share-date" class="text-md text-gray-500 mt-1"></p>
-                <p class="text-xs text-gray-400 mt-1" id="session-id-share">Status: Data persists across refresh (Session Storage)</p>
+                <p class="text-xs text-gray-400 mt-1" id="session-id-share">Status: Data persists (Local Storage)</p>
             </div>
             
-            <!-- The actual shareable table HTML will be injected here -->
             <div id="shareable-results-table"></div>
 
             <div class="mt-8 text-center">
@@ -147,7 +121,6 @@
 
     </div>
 
-    <!-- Confirmation Modal (Reset) -->
     <div id="reset-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex items-center justify-center hidden" onclick="hideModal('reset-modal')">
         <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm mx-4" onclick="event.stopPropagation()">
             <h3 class="text-xl font-bold mb-4 text-red-600">Confirm Reset</h3>
@@ -159,7 +132,6 @@
         </div>
     </div>
     
-    <!-- Confirmation Modal (Delete) -->
     <div id="delete-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex items-center justify-center hidden" onclick="hideModal('delete-modal')">
         <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm mx-4" onclick="event.stopPropagation()">
             <h3 class="text-xl font-bold mb-4 text-gray-800">Remove Player</h3>
@@ -171,13 +143,11 @@
         </div>
     </div>
 
-    <!-- Confirmation Modal (Adjustment) -->
     <div id="adjustment-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex items-center justify-center hidden" onclick="hideModal('adjustment-modal')">
         <div class="bg-white p-6 rounded-xl shadow-2xl max-w-md mx-4" onclick="event.stopPropagation()">
             <h3 id="modal-title" class="text-xl font-bold mb-4 text-indigo-600">Confirm Adjustment</h3>
             <p id="modal-explanation" class="text-gray-700 mb-6">
-                <!-- Dynamic text will be injected here by JS -->
-            </p>
+                </p>
             <p class="text-sm font-semibold text-gray-500 mb-4">
                 This process is generally irreversible.
             </p>
@@ -188,25 +158,26 @@
         </div>
     </div>
 
-    <!-- Script for Game Logic with Session Storage -->
     <script>
         // Global state (In-Memory, but loaded/saved from Session Storage)
         let playersData = []; 
         let currentGameMetrics = { netProfitLoss: 0, totalMoneyIn: 0, totalClosingBalance: 0 }; 
         
         const BUY_IN_AMOUNT = 10;
-        const SESSION_STORAGE_KEY = 'pokerGameSessionData'; // Key to save under
+        // 🚨 CRITICAL FIX: Changed from SESSION_STORAGE_KEY to LOCAL_STORAGE_KEY
+        const LOCAL_STORAGE_KEY = 'pokerGamePersistentData'; 
 
         // --- Persistence Functions ---
         
-        // Loads data from sessionStorage on app start
+        // Loads data from localStorage on app start
         function loadSessionData() {
             try {
-                const storedData = sessionStorage.getItem(SESSION_STORAGE_KEY);
+                // 🚨 CRITICAL FIX: Changed sessionStorage.getItem to localStorage.getItem
+                const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
                 if (storedData) {
                     // Parse the stored JSON string back into a JavaScript object/array
                     playersData = JSON.parse(storedData);
-                    showStatus("Session data loaded successfully.", false);
+                    showStatus("Persistent data loaded successfully.", false);
                 } else {
                     playersData = []; // Start fresh if no data is found
                 }
@@ -217,11 +188,11 @@
             }
         }
         
-        // Saves current playersData to sessionStorage
+        // Saves current playersData to localStorage
         function saveSessionData() {
             try {
-                // Stringify the JavaScript array into a JSON string before saving
-                sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(playersData));
+                // 🚨 CRITICAL FIX: Changed sessionStorage.setItem to localStorage.setItem
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(playersData));
             } catch (e) {
                 console.error("Error saving session data:", e);
                 showStatus("Error saving game data. Is your browser storage full?", true);
@@ -303,7 +274,7 @@
             const calculatedPlayers = calculateGameMetrics(playersData);
             playersData = calculatedPlayers; // Update the global array with calculated metrics
             
-            // ** 2. Save data to sessionStorage **
+            // ** 2. Save data to localStorage **
             saveSessionData();
             
             // 3. Render the UI
@@ -411,22 +382,17 @@
                 // 1. IN-GAME STATUS ROW 
                 inGameListHTML += `
                     <div class="player-row bg-white ${paddingClass} rounded-xl shadow-md grid ${inGameGridCols} ${gapClass} items-center min-w-[400px]">
-                        <!-- Name -->
                         <div class="flex items-center text-base font-semibold text-gray-800">
                             ${player.name}
                         </div>
 
-                        <!-- Starting Buy-in ($) -->
                         <div class="text-center text-sm font-medium text-gray-600">
                             $${BUY_IN_AMOUNT}
                         </div>
 
-                        <!-- Reloads (Count + Buttons) -->
                         <div class="flex items-center justify-center space-x-2">
-                            <!-- Reload Count -->
                             <span class="text-base font-medium text-blue-600 w-5 text-right">${playerReloads}</span>
                             
-                            <!-- Reload Controls Group -->
                             <div class="flex items-center space-x-1">
                                 <button 
                                     onclick="decrementReload('${player.id}')" 
@@ -446,9 +412,7 @@
                             </div>
                         </div>
 
-                        <!-- Action Buttons (Delete Only) -->
                         <div class="flex justify-center items-center">
-                            <!-- Delete Button -->
                             <button 
                                 onclick="showDeleteConfirmation('${player.id}', '${player.name}')" 
                                 class="bg-gray-200 hover:bg-red-300 text-gray-600 w-7 h-7 rounded-full shadow-md transition duration-200 active:scale-90 text-md"
@@ -463,17 +427,14 @@
                 // 2. PAYOUT RESULTS ROW 
                 payoutListHTML += `
                     <div class="player-row bg-white ${paddingClass} rounded-xl shadow-md grid ${payoutGridCols} ${gapClass} items-center ${minWidthClass}">
-                        <!-- Name -->
                         <div class="flex items-center text-base font-semibold text-gray-800">
                             ${player.name}
                         </div>
                         
-                        <!-- Total Buy-in (Calculated) -->
                         <div class="text-center text-sm font-medium text-gray-600">
                             $${totalPlayerMoneyIn.toFixed(2)}
                         </div>
 
-                        <!-- Closing Balance (Input) - Tighter Padding -->
                         <div class="flex items-center">
                             <span class="mr-0.5 text-gray-500">$</span>
                             <input
@@ -486,13 +447,11 @@
                             />
                         </div>
 
-                        <!-- Profit/Loss (P/L) -->
                         <div class="text-right text-base ${profitLossPreClass}">
                             ${plPrePrefix}$${Math.abs(profitLossPre).toFixed(2)}
                             ${adjustmentDetailHTML}
                         </div>
 
-                        <!-- Profit/Loss (Final Adjusted) -->
                         <div class="text-right text-base ${profitLossAdjClass}">
                             ${plAdjPrefix}$${Math.abs(profitLossAdjusted).toFixed(2)}
                         </div>
@@ -503,13 +462,9 @@
             // 1. IN-GAME TOTALS
             const inGameTotalRowHTML = `
                 <div class="player-row bg-gray-100 ${paddingClass} rounded-xl shadow-inner grid ${inGameGridCols} ${gapClass} items-center min-w-[400px] mt-4 border-t-2 border-gray-400">
-                    <!-- Label -->
                     <div class="text-base font-bold text-gray-800">TOTALS</div>
-                    <!-- Total Initial Buy-In -->
                     <div class="text-center text-sm font-bold text-gray-700">$${totalInitialBuyIn.toFixed(0)}</div>
-                    <!-- Total Reloads Count -->
                     <div class="text-center text-base font-bold text-blue-700">${totalReloadsCount}</div>
-                    <!-- Action - Empty -->
                     <div class="flex justify-center items-center text-gray-500">—</div>
                 </div>
             `;
@@ -542,17 +497,12 @@
 
             const payoutTotalRowHTML = `
                 <div class="player-row bg-gray-100 ${paddingClass} rounded-xl shadow-inner grid ${payoutGridCols} ${gapClass} items-center ${minWidthClass} mt-4 border-t-2 border-gray-400">
-                    <!-- Label -->
                     <div class="text-base font-bold text-gray-800">TOTALS</div>
-                    <!-- Total Buy-in -->
                     <div class="text-center text-sm font-bold text-gray-700">$${totalMoneyIn.toFixed(2)}</div>
-                    <!-- Total Closing Balance -->
                     <div class="text-right text-base font-bold text-gray-800">$${totalClosingBalance.toFixed(2)}</div>
                     
-                    <!-- P/L (Shortfall Total) -->
                     <div class="text-right text-base ${shortfallTotalClass}">${shortfallDisplayPrefix}$${shortfallDisplayValue}</div>
                     
-                    <!-- Net Profit/Loss (Adj) - Always $0.00 -->
                     <div class="text-right text-base ${finalAdjTotalValue}">+$${finalAdjTotalValue}</div>
                 </div>
             `;
@@ -904,7 +854,7 @@
             document.getElementById('reset-modal').classList.remove('hidden');
         };
 
-        // Reset Game Data (Update: now clears sessionStorage key)
+        // Reset Game Data (Update: now clears localStorage key)
         window.resetGame = () => {
             hideModal('reset-modal');
             showStatus("Resetting game data...");
@@ -917,8 +867,8 @@
                     adjustmentAmount: 0
                 }));
                 
-                // Clear the session storage to match the reset game state
-                sessionStorage.removeItem(SESSION_STORAGE_KEY);
+                // 🚨 CRITICAL FIX: Changed sessionStorage.removeItem to localStorage.removeItem
+                localStorage.removeItem(LOCAL_STORAGE_KEY);
                 
                 processAndRenderPlayers(); // Update UI & Save
                 showStatus("Game successfully reset!", false);
@@ -961,7 +911,7 @@
             document.getElementById(id).classList.add('hidden');
         };
         
-        // Initial load: Load data from session storage first, then render
+        // Initial load: Load data from local storage first, then render
         window.onload = () => {
             loadSessionData();
             processAndRenderPlayers();
