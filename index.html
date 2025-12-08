@@ -12,6 +12,7 @@
             background-color: #f7f9fb;
         }
         /* Custom scrollbar for better aesthetics */
+        /* Applied only to the in-game list, where scrolling might be necessary for many players */
         .player-list::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -29,16 +30,12 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         
-        /* --- FIX for Screenshot Layout --- */
-        /* Ensure the main payout list container does not overflow horizontally */
+        /* --- FIX for Screenshot Layout (Removing Scroll) --- */
+        /* The main list container for players (in-game) can scroll, but we must ensure the payout table does not. */
         #payout-container {
-            overflow-x: hidden !important; /* Forces content to fit */
+            /* Removing overflow-x-auto from the element in HTML and ensuring its parent doesn't force a minimum width */
+            overflow-x: hidden !important; 
         }
-        /* Remove minimum width constraint to allow flexible sizing */
-        .payout-list-item {
-            min-width: 100% !important; 
-        }
-        /* --- END FIX --- */
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen">
@@ -80,7 +77,9 @@
             </div>
 
             <h2 id="payout-title" class="text-2xl font-semibold mb-4 text-gray-700 border-t pt-4 border-gray-300">Payout & Final Results (Enter Closing Balances Here)</h2>
-            <div id="payout-container" class="player-list"> <div id="payout-header" class="sticky-header grid grid-cols-[0.8fr_0.9fr_0.9fr_1fr] gap-1 font-bold text-xs md:text-sm text-white border-b-2 pb-2 mb-3 px-2">
+            
+            <div id="payout-container" class="player-list"> 
+                <div id="payout-header" class="sticky-header grid grid-cols-[0.8fr_0.9fr_0.9fr_1fr] gap-1 font-bold text-xs md:text-sm text-white border-b-2 pb-2 mb-3 px-2">
                     <div class="text-white">PLAYER</div>
                     <div class="text-center text-gray-400">TOTAL IN ($)</div>
                     <div class="text-right text-yellow-300">CLOSING BALANCE ($)</div>
@@ -376,7 +375,6 @@
             let payoutListHTML = '';
             
             const payoutGridCols = 'grid-cols-[0.8fr_0.9fr_0.9fr_1fr]'; // Simplified grid
-            // const minWidthClass = 'min-w-[550px]'; // REMOVED THIS CLASS
             const gapClass = 'gap-1'; 
             const paddingClass = 'p-2'; 
 
