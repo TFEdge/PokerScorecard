@@ -28,6 +28,17 @@
             background-color: #000; 
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
+        
+        /* --- FIX for Screenshot Layout --- */
+        /* Ensure the main payout list container does not overflow horizontally */
+        #payout-container {
+            overflow-x: hidden !important; /* Forces content to fit */
+        }
+        /* Remove minimum width constraint to allow flexible sizing */
+        .payout-list-item {
+            min-width: 100% !important; 
+        }
+        /* --- END FIX --- */
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen">
@@ -69,8 +80,7 @@
             </div>
 
             <h2 id="payout-title" class="text-2xl font-semibold mb-4 text-gray-700 border-t pt-4 border-gray-300">Payout & Final Results (Enter Closing Balances Here)</h2>
-            <div id="payout-container" class="player-list overflow-x-auto">
-                <div id="payout-header" class="sticky-header grid grid-cols-[0.8fr_0.9fr_0.9fr_1fr] gap-1 font-bold text-xs md:text-sm text-white border-b-2 pb-2 mb-3 px-2 min-w-[550px]">
+            <div id="payout-container" class="player-list"> <div id="payout-header" class="sticky-header grid grid-cols-[0.8fr_0.9fr_0.9fr_1fr] gap-1 font-bold text-xs md:text-sm text-white border-b-2 pb-2 mb-3 px-2">
                     <div class="text-white">PLAYER</div>
                     <div class="text-center text-gray-400">TOTAL IN ($)</div>
                     <div class="text-right text-yellow-300">CLOSING BALANCE ($)</div>
@@ -78,7 +88,7 @@
                 </div>
 
                 <div id="payout-list" class="space-y-3 pb-2">
-                    <div class="text-center py-10 text-gray-500 bg-white rounded-xl shadow-md">No players added yet.</div>
+                    <div class="text-center py-10 text-gray-500 bg-white rounded-xl shadow-md payout-list-item">No players added yet.</div>
                 </div>
             </div>
             <div class="mt-8 pt-4 border-t border-gray-200 flex flex-col md:flex-row justify-end space-y-3 md:space-y-0 md:space-x-4">
@@ -355,7 +365,7 @@
             payoutListEl.innerHTML = ''; 
 
             if (players.length === 0) {
-                payoutListEl.innerHTML = '<div class="text-center py-10 text-gray-500 bg-white rounded-xl shadow-md">No players added yet.</div>';
+                payoutListEl.innerHTML = '<div class="text-center py-10 text-gray-500 bg-white rounded-xl shadow-md payout-list-item">No players added yet.</div>';
                 return;
             }
 
@@ -366,7 +376,7 @@
             let payoutListHTML = '';
             
             const payoutGridCols = 'grid-cols-[0.8fr_0.9fr_0.9fr_1fr]'; // Simplified grid
-            const minWidthClass = 'min-w-[550px]'; 
+            // const minWidthClass = 'min-w-[550px]'; // REMOVED THIS CLASS
             const gapClass = 'gap-1'; 
             const paddingClass = 'p-2'; 
 
@@ -419,7 +429,7 @@
 
                 // PAYOUT RESULTS ROW (SIMPLIFIED)
                 payoutListHTML += `
-                    <div class="player-row bg-white ${paddingClass} rounded-xl shadow-md grid ${payoutGridCols} ${gapClass} items-center ${minWidthClass}">
+                    <div class="player-row bg-white ${paddingClass} rounded-xl shadow-md grid ${payoutGridCols} ${gapClass} items-center payout-list-item">
                         <div class="flex items-center text-base font-semibold text-gray-800">
                             ${player.name}
                         </div>
@@ -461,7 +471,7 @@
 
             // Add Totals Row
             const payoutTotalRowHTML = `
-                <div class="player-row bg-gray-100 ${paddingClass} rounded-xl shadow-inner grid ${payoutGridCols} ${gapClass} items-center ${minWidthClass} mt-4 border-t-2 border-gray-400">
+                <div class="player-row bg-gray-100 ${paddingClass} rounded-xl shadow-inner grid ${payoutGridCols} ${gapClass} items-center payout-list-item mt-4 border-t-2 border-gray-400">
                     <div class="text-base font-bold text-gray-800">TOTALS</div>
                     <div class="text-center text-sm font-bold text-gray-700">$${totalMoneyIn.toFixed(2)}</div>
                     <div class="text-right text-base font-bold text-gray-800">$${totalClosingBalance.toFixed(2)}</div>
